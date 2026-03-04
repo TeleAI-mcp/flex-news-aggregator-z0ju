@@ -1,0 +1,20 @@
+name: Auto-close completed issues
+
+on:
+  issues:
+    types: [opened, labeled]
+
+jobs:
+  auto-close:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Close issue if labeled as completed
+        if: contains(github.event.issue.labels.*.name, 'completed')
+        uses: actions/stale@v9
+        with:
+          repo-token: ${{ secrets.GITHUB_TOKEN }}
+          stale-issue-message: 'This issue has been automatically closed because it was labeled as completed.'
+          close-issue-message: 'This issue has been automatically closed because it was labeled as completed.'
+          days-before-stale: 0
+          days-before-close: 0
+          only-labels: 'completed'
